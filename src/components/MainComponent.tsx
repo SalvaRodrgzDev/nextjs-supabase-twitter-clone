@@ -1,33 +1,26 @@
 import { BsChat, BsDot, BsThreeDots } from "react-icons/bs";
 import { AiOutlineHeart, AiOutlineRetweet } from "react-icons/ai";
 import { IoShareOutline, IoStatsChart } from "react-icons/io5";
+import ComposeTweet from "./server-components/compose-tweet";
+import dayjs from "dayjs";
+import relativeTime from "dayjs/plugin/relativeTime";
+import { getTweets } from "@/lib/supabase/getTweets";
 
-const MainComponent = () => {
+dayjs.extend(relativeTime);
+
+const MainComponent = async () => {
+  const res = await getTweets();
   return (
     <main className="flex w-full h-full min-h-screen flex-col border-l-[0.5px] border-r-[0.5px] border-gray-600">
       <h1 className="text-xl font-bold p-6 backdrop-blur bg-black/10 sticky top-0">
         Home
       </h1>
       <div className="border-t-[0.5px] px-4 border-b-[0.5px] flex items-stretch py-6 space-x-2 border-gray-600 relative">
-        <div className="w-11 h-11 bg-slate-400 rounded-full flex-none"></div>
-        <div className="flex flex-col w-full h-full">
-          <input
-            type="text"
-            className="w-full h-full text-2xl placeholder:text-gray-600 bg-transparent border-b-[0.5px] border-gray-600 p-4 outline-none border-none"
-            placeholder="What's happening?"
-          />
-          <div className="w-full justify-between items-center flex">
-            <div></div>
-            <div className="w-full max-w-[100px]">
-              <button className="rounded-full bg-twitterColor px-4 py-2 w-full text-lg text-center hover:bg-opacity-70 transition duration-200 font-bold">
-                Tweet
-              </button>
-            </div>
-          </div>
-        </div>
+        <ComposeTweet/>
       </div>
-      <div className="flex flex-col">
-        {Array.from({ length: 5 }).map((_, i) => (
+      <div className="w-full">
+        {res?.error && <div>Something wrong with the server</div>}
+        { res?.data && res.data.map((tweet, i) => (
           <div
             key={i}
             className="border-b-[0.5px] border-gray-600 p-2 flex space-x-4"
@@ -38,23 +31,18 @@ const MainComponent = () => {
             <div className="flex flex-col">
               <div className="flex items-center w-full justify-between">
                 <div className="flex items-center space-x-1 w-full">
-                  <div className="font-bold">Club Of Coders</div>
-                  <div className="text-gray-500">@clubofcoderscom</div>
+                  <div className="font-bold">{tweet.profiles.full_name ?? ""}</div>
+                  <div className="text-gray-500">@{tweet.profiles.username}</div>
                   <div className="text-gray-500">
                     <BsDot />
                   </div>
-                  <div className="text-gray-500">1 hour ago</div>
+                  <div className="text-gray-500">{dayjs(tweet.created_at).fromNow()}</div>
                 </div>
                 <div>
                   <BsThreeDots />
                 </div>
               </div>
-              <div className="text-white text-base">
-                Lorem ipsum dolor, sit amet consectetur adipisicing elit. Iure
-                deserunt fugit id autem mollitia vero cum officia animi ipsa.
-                Molestias provident aperiam alias impedit! Architecto expedita
-                in velit mollitia facere illum minima, dolores dolor distinctio
-                ducimus nihil eveniet
+              <div className="text-white text-base">{tweet.text}
               </div>
               <div className="bg-slate-400 aspect-square w-full h-80 rounded-xl mt-2"></div>
               <div className="flex items-center justify-start space-x-20 mt-2 w-full">

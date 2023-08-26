@@ -1,8 +1,7 @@
-import { Database } from "@/lib/supabase.types";
 import { createServerComponentSupabaseClient } from "@supabase/auth-helpers-nextjs";
 import { randomUUID } from "crypto";
 import { cookies, headers } from "next/headers";
-import FormClientComponent from "./FormClientComponent";
+import ComposeTweetForm from "../client-components/compose-tweet-form";
 import { SupabaseClient } from "@supabase/supabase-js";
 import { revalidatePath } from "next/cache";
 
@@ -44,7 +43,7 @@ const ComposeTweet = () => {
     return {data, error};
     }
   
-    return <FormClientComponent serverAction={submitTweet} />;
+    return <ComposeTweetForm serverAction={submitTweet} />;
 }
 
 export default ComposeTweet

@@ -20,11 +20,15 @@
     "class-variance-authority": "0.5.2",
     "clsx": "1.2.1",
     "dayjs": "^1.11.9",
+    "drizzle-orm": "^0.28.5",
     "eslint": "8.38.0",
     "eslint-config-next": "13.3.0",
     "lucide-react": "0.172.0",
     "next": "^13.4.12",
+    "pg": "^8.11.3",
+    "pg-pool": "^3.6.1",
     "postcss": "8.4.21",
+    "postgres": "^3.3.5",
     "react": "18.2.0",
     "react-dom": "18.2.0",
     "react-icons": "4.8.0",
@@ -33,5 +37,9 @@
     "tailwindcss": "3.3.1",
     "tailwindcss-animate": "1.0.5",
     "typescript": "^5.1.6"
+  },
+  "devDependencies": {
+    "@types/pg-pool": "^2.0.3",
+    "drizzle-kit": "^0.19.13"
   }
 }

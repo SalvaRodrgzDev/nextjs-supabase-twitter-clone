@@ -23,8 +23,8 @@ const MainComponent = async () => {
         <ComposeTweet/>
       </div>
       <div className="w-full">
-        { res?.data && res.data.map((tweet) => (
-          <Tweet key={tweet.id} tweet={tweet} />
+        { res && res.map(({likes, tweet, profile, hasLiked, replies}) => (
+          <Tweet key={tweet.id} tweet={{tweetDetails: {...tweet}, userProfile: {...profile},}} likesCount={likes.length} hasLiked={hasLiked} repliesCount={replies.length}/>
         ))}
       </div>
     </main>

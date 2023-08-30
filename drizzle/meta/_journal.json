@@ -8,6 +8,20 @@
       "when": 1693153768834,
       "tag": "0000_clever_shadow_king",
       "breakpoints": true
+    },
+    {
+      "idx": 1,
+      "version": "5",
+      "when": 1693306717061,
+      "tag": "0001_cool_starfox",
+      "breakpoints": true
+    },
+    {
+      "idx": 2,
+      "version": "5",
+      "when": 1693389331470,
+      "tag": "0002_talented_pet_avengers",
+      "breakpoints": true
     }
   ]
 }

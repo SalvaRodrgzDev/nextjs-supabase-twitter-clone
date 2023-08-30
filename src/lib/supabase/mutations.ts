@@ -1,26 +1,62 @@
 "use server";
-
 import { randomUUID } from "crypto";
 import { supabaseServer } from ".";
 import { revalidatePath } from "next/cache";
+import { db } from "../db";
+import { likes, replies, tweets } from "../db/schema";
 
-export const likeTweet = async ({tweetId, userId}: {tweetId: string, userId: string}) => {
-    await supabaseServer
-        .from("likes")
-        .insert({
-            id: randomUUID(),
-            tweet_id:tweetId,
-            user_id: userId
+export const likeTweet = async ({
+  tweetId,
+  userId,
+}: {
+  tweetId: string;
+  userId: string;
+}) => {
+  await db
+    .insert(likes)
+    .values({
+      tweetId,
+      userId,
     })
-    revalidatePath("/")
-    }
+    .catch((err) => {
+      console.log(err);
+    });
+  revalidatePath("/");
+};
+export const unlikeTweet = async ({
+  tweetId,
+  userId,
+}: {
+  tweetId: string;
+  userId: string;
+}) => {
+  const { data, error } = await supabaseServer
+    .from("likes")
+    .delete()
+    .eq("tweet_id", tweetId)
+    .eq("user_id", userId);
+  revalidatePath("/");
+  console.log({ data, error });
+};
+export const reply = async ({
+  tweetId,
+  userId,
+  replyText,
+}: {
+  tweetId: string;
+  userId: string;
+  replyText: string;
+}) => {
+  // you can verify/check the replyText is truthy
 
-export const unlikeTweet = async ({tweetId, userId}: {tweetId: string, userId: string}) => {
-    await supabaseServer
-        .from("likes")
-        .delete()
-        .eq('tweet_id', tweetId)
-        .eq('user_id', userId)
-        
-    revalidatePath("/")
-}
+  if (replyText === "") return;
+
+  await db.insert(tweets).values({
+    text: replyText,
+    profileId: userId,
+    isReply: true,
+    replyId: tweetId,
+  });
+
+  revalidatePath(`/tweet/[id]`);
+};

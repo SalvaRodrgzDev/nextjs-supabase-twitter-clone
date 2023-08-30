@@ -28,6 +28,7 @@ export default function SupabaseProvider({
 
   const [email, setEmail] = useState("");
   const [username, setUsername] = useState("");
+  const [fullName, setFullName] = useState("");
 
   const [isLoading, setIsLoading] = useState(false);
 
@@ -79,6 +80,7 @@ export default function SupabaseProvider({
                   options: {
                     data: {
                       username,
+                      fullName
                     },
                   },
                 });
@@ -89,13 +91,22 @@ export default function SupabaseProvider({
               <Input
                 type="email"
                 placeholder="email"
+                value={email}
                 onChange={(e) => setEmail(e.target.value)}
               />
               <Input
                 type="text"
                 placeholder="username"
                 min={3}
+                value={username}
                 onChange={(e) => setUsername(e.target.value)}
+                className="my-2"
+              />
+              <Input
+                type="text"
+                placeholder="your name"
+                value={fullName}
+                onChange={(e) => setFullName(e.target.value)}
                 className="my-2"
               />
               <p className="text-sm text-gray-900 my-2">

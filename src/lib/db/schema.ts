@@ -17,18 +17,14 @@ export const profiles = pgTable("profiles", {
   createdAt: timestamp("created_at").defaultNow().notNull(),
   username: text("username").notNull(),
   fullName: text("full_name").notNull(),
-  avatarUrl: text("avatar_url"),
 });
-
 export type Profile = InferModel<typeof profiles>;
-
 export const profilesRelations = relations(profiles, ({ many }) => ({
   tweets: many(tweets),
   likes: many(likes),
   bookmarks: many(bookmarks),
   replies: many(replies),
 }));
-
 export const tweets = pgTable("tweets", {
   id: uuid("id").primaryKey().defaultRandom(),
   text: text("text").notNull(),
@@ -60,7 +56,6 @@ export const hashtags = pgTable("hashtags", {
   id: uuid("id").primaryKey().defaultRandom(),
   name: text("name").notNull(),
 });
-
 export const tweetHashtag = pgTable(
   "tweet_hashtag",
   {
@@ -78,7 +73,6 @@ export const tweetHashtag = pgTable(
     ),
   })
 );
-
 export const replies = pgTable("replies", {
   id: uuid("id").primaryKey().defaultRandom(),
   text: text("text").notNull(),
@@ -88,14 +82,12 @@ export const replies = pgTable("replies", {
   tweetId: uuid("tweet_id").references(() => tweets.id),
   replyId: uuid("reply_id").references((): AnyPgColumn => replies.id), // self reference
 });
-
 export const repliesRelations = relations(replies, ({ one }) => ({
   profile: one(profiles, {
     fields: [replies.userId],
     references: [profiles.id],
   }),
 }));
-
 export const likes = pgTable(
   "likes",
   {
@@ -115,16 +107,13 @@ export const likes = pgTable(
     ),
   })
 );
-
 export type Like = InferModel<typeof likes>;
-
 export const likesRelations = relations(likes, ({ one }) => ({
   profile: one(profiles, {
     fields: [likes.userId],
     references: [profiles.id],
   }),
 }));
-
 export const bookmarks = pgTable(
   "bookmarks",
   {
@@ -144,7 +133,6 @@ export const bookmarks = pgTable(
     ),
   })
 );
-
 export const bookmarksRelations = relations(bookmarks, ({ one }) => ({
   profile: one(profiles, {
     fields: [bookmarks.userId],
